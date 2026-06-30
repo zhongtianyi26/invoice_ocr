@@ -11,5 +11,6 @@ dependencies = [
     "paddlepaddle==3.2.2",
     "python-multipart>=0.0.20",
     "some-package>=0.1",
+    "streamlit>=1.41.0",
     "uvicorn>=0.39.0",
 ]
