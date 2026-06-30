@@ -3,10 +3,10 @@ import time
 import streamlit as st
 from PIL import Image
 
-from ocr import process_image
+from app.core.service import process_image
 
 
-st.set_page_config(page_title="PP-OCRv6 测试页面", page_icon="OCR", layout="wide")
+st.set_page_config(page_title="PP-OCRv6 测试页面", layout="wide")
 
 
 def run_uploaded_image(uploaded_file):
@@ -19,7 +19,6 @@ def run_uploaded_image(uploaded_file):
 
 def main():
     st.title("PP-OCRv6 测试页面")
-    st.caption("直接复用 ocr.py 中的同一个 PaddleOCR 实例，不经过 FastAPI 接口。")
 
     uploaded_files = st.file_uploader(
         "上传图片",
@@ -34,8 +33,22 @@ def main():
     if st.button("开始识别", type="primary", use_container_width=True):
         total_elapsed = 0.0
         success_count = 0
+        total_files = len(uploaded_files)  # 获取总图片数
 
-        for uploaded_file in uploaded_files:
+        # ==================== 1. 新增：初始化进度条和状态占位符 ====================
+        progress_bar = st.progress(0.0)    # 初始化进度条为 0%
+        status_message = st.empty()         # 创建一个动态文本占位符
+        # =========================================================================
+
+        for idx, uploaded_file in enumerate(uploaded_files):
+            # ==================== 2. 新增：动态更新“识别中”状态 ====================
+            # 使用 .info() 让提示框变成蓝色，更显眼
+            status_message.info(
+                f"⏳ 正在识别中... 进度: {idx}/{total_files} | "
+                f"当前正在处理: `{uploaded_file.name}`"
+            )
+            # =========================================================================
+
             st.divider()
             left, right = st.columns([1, 1])
 
@@ -63,6 +76,15 @@ def main():
                         st.warning("未识别到文字。")
                 except Exception as exc:
                     st.error(f"识别失败：{exc}")
+
+            # ==================== 3. 新增：每跑完一张图，推进进度条 ====================
+            current_progress = (idx + 1) / total_files
+            progress_bar.progress(current_progress)
+            # =========================================================================
+
+        # ==================== 4. 新增：全部完成后更新状态 ====================
+        status_message.success(f"🎉 所有图片识别完成！(成功: {success_count}/{total_files})")
+        # =========================================================================
 
         if success_count:
             st.divider()
