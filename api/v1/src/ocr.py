@@ -8,12 +8,19 @@ from paddleocr import PaddleOCR
 from PIL import Image
 import numpy as np
 
+from dotenv import load_dotenv
+
+load_dotenv() 
 # 初始化 PaddleOCR 实例（全局复用，避免重复加载）
 ocr = PaddleOCR(
     use_doc_orientation_classify=False,
     use_doc_unwarping=False,
     use_textline_orientation=False,
 )
+
+ROOT_PATH = os.getenv("OCR_ROOT_PATH", "")        
+API_HOST = os.getenv("OCR_HOST", "0.0.0.0")
+API_PORT = int(os.getenv("OCR_PORT", "8000"))
 
 app = FastAPI(title="PP-OCRv6 Service", description="支持 Base64 或文件上传的 OCR 服务")
 
@@ -69,4 +76,4 @@ async def root():
     return {"message": "PP-OCRv6 OCR Service is running. Use /ocr/base64 (POST form-data with base64_string) or /ocr/upload (POST file) to perform OCR."}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host=API_HOST, port=API_PORT)
