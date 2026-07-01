@@ -30,7 +30,7 @@ def main():
         st.info("请选择一张或多张 jpg、jpeg、png 图片。")
         return
 
-    if st.button("开始识别", type="primary", use_container_width=True):
+    if st.button("开始识别", type="primary", width='stretch'):
         total_elapsed = 0.0
         success_count = 0
         total_files = len(uploaded_files)  # 获取总图片数
@@ -54,7 +54,7 @@ def main():
 
             with left:
                 st.subheader(uploaded_file.name)
-                st.image(Image.open(uploaded_file), use_container_width=True)
+                st.image(Image.open(uploaded_file), width='stretch')
 
             with right:
                 try:
