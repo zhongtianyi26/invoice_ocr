@@ -1,0 +1,33 @@
+# 虚拟环境
+**/.venv/
+**/venv/
+**/env/
+
+# Python 缓存
+**/__pycache__/
+*.pyc
+*.pyo
+
+# 模型文件（通常巨大）
+**/models/
+*.pdmodel
+*.pdiparams
+
+# 测试图片和数据
+**/test/
+**/data/
+**/*.jpg
+**/*.png
+**/*.jpeg
+
+# Git
+**/.git/
+**/.gitignore
+
+# Docker 相关文件（如果不想包含）
+**/docker/
+**/Dockerfile*
+**/docker-compose*.yml
+
+# 日志
+*.log

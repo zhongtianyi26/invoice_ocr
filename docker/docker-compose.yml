@@ -2,29 +2,17 @@ version: '3.8'
 
 services:
   ocr-api:
-    build: .
+    build:
+      context: ..                 # 回到项目根目录
+      dockerfile: docker/Dockerfile
     container_name: ocr-api
     ports:
       - "8000:8000"
     volumes:
-      - ./models:/app/models          # 挂载模型目录（宿主机 models/ 映射到容器 /app/models）
-      - ./api:/app/api                # 挂载代码目录，方便热更新（可选）
+      - ../models:/app/models          # 挂载模型目录（宿主机 models/ 映射到容器 /app/models）
+      - ../api:/app/api                # 挂载代码目录，方便热更新（可选）
     environment:
       - PADDLE_HOME=/app/models
       - FLAGS_use_mkldnn=0
     restart: unless-stopped
 
-  streamlit-ui:
-    build:
-      context: .
-      dockerfile: Dockerfile.streamlit   # 单独为 Streamlit 准备一个 Dockerfile
-    container_name: ocr-ui
-    ports:
-      - "8501:8501"
-    volumes:
-      - ./api/v1/src:/app/api/v1/src     # 挂载 streamlit 脚本所在目录
-    environment:
-      - API_BASE_URL=http://ocr-api:8000  # 容器内访问 API 服务
-    depends_on:
-      - ocr-api
-    restart: unless-stopped
