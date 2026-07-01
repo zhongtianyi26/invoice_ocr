@@ -167,3 +167,19 @@ uv run python -c "from ocr import app, process_image; print(app.title, callable(
   "results": ["文本1", "文本2"]
 }
 ```
+
+## 部署
+
+### Docker 部署
+
+```bash
+cd <repository_name>
+docker build -f docker/Dockerfile -t ocr-api .
+docker-compose -f docker/docker-compose.yml up -d
+```
+
+## 测试
+
+```bash
+curl http://localhost:8000/
+```

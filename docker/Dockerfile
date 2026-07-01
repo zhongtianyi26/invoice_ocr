@@ -1,8 +1,6 @@
 # 使用轻量级 Python 基础镜像
 FROM python:3.13-slim
 
-# 优化 1：确保系统 CA 证书是最新的，防止 TLS 握手问题
-
 
 # 设置工作目录
 WORKDIR /app

@@ -13,6 +13,6 @@ services:
       - ../api:/app/api                # 挂载代码目录，方便热更新（可选）
     environment:
       - PADDLE_HOME=/app/models
-      - FLAGS_use_mkldnn=0
+      - PYTHONPATH=/app/api/v1/src
     restart: unless-stopped
 
