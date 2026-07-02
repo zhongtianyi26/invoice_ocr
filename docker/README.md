@@ -126,35 +126,6 @@ uv run modelscope download --model PaddlePaddle/PP-OCRv6_medium_rec --local_dir 
     curl -X POST "http://localhost:8000/ocr/base64" \
       -F "base64_string=<base64.txt"
 
-具体接口文档请参考 `api/docs/接口文档.md`。
+具体[接口文档](..\api\docs\接口文档.md)请参考 `api/docs/接口文档.md`。
 
 ---
-
-## 常见问题
-
-### 1. 容器启动失败，提示 `ModuleNotFoundError: No module named 'api'`
-
-确保 `api/` 目录下所有子目录（`v1/`, `src/`, `app/`）都包含 `__init__.py` 文件（可为空）。检查 `docker-compose.yml` 中 `PYTHONPATH` 是否正确。
-
-### 2. 模型文件加载失败
-
-检查 `models/` 目录是否挂载正确，以及模型子目录名称是否与代码中的 `text_detection_model_dir` 和 `text_recognition_model_dir` 一致。
-
-### 3. 下载依赖时卡住
-
-如果构建镜像时 `uv sync` 下载缓慢，可修改 `Dockerfile` 中的 `UV_DEFAULT_INDEX` 环境变量，更换为更快的镜像源（如清华、阿里云）。
-
----
-
-## 生产环境建议
-
-- 移除 `docker-compose.yml` 中 `../api` 的挂载，避免运行时修改代码。
-- 使用多阶段构建进一步缩小镜像体积。
-- 为容器设置资源限制（如 `deploy.resources`）。
-- 配置健康检查（`healthcheck`）以便编排工具监控服务状态。
-
----
-
-## 许可证
-
-本项目基于 PP-OCRv6 开发，请遵守 PaddleOCR 的许可证要求。
